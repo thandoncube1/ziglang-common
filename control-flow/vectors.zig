@@ -39,7 +39,17 @@ const Vec3 = struct {
         return .{ .vecA = vecA, .vecB = vecB };
     }
 
+    pub fn dotProduct(self: Vec3, other: Vec3) f64 {
+        return (self.x * other.x) + (self.y * other.y) + (self.z * other.z);
+    }
+
     // Calculate the angle between 2 poles
+    pub fn calculateAngle(mag1: f64, mag2: f64, dotP: f64) f64 {
+        // Get the magnitude of both vectors
+        // cosø = dot.Product/mag1 * mag2
+        const result = dotP / (mag1 * mag2);
+        return m.radiansToDegrees(m.acos(result));
+    }
 };
 
 pub fn main() !void {
@@ -51,13 +61,20 @@ pub fn main() !void {
 
     const distance = v1.distance(v2);
 
+    const dotProductResult = Vec3.dotProduct(v1, v2);
+
     // Get the magnitude of the 2 vectors
     const magnitude1 = v1.magnitude();
     const magnitude2 = v2.magnitude();
     const result: MagnitudeType = v1.magnitudes(v2);
+
+    // Calculate the angle of poles
+    const angleOfPoles = Vec3.calculateAngle(magnitude1, magnitude2, dotProductResult);
+
     // Print out of the calculations
     try stdout.print("Distance: {d:.2}\n", .{distance});
     try stdout.print("V1 Magnitude: {d:.2}\n", .{magnitude1});
     try stdout.print("V2 Magnitude: {d:.2}\n", .{magnitude2});
+    try stdout.print("Angle of Poles: {d:.2}\n", .{angleOfPoles});
     try stdout.print("Magnitude: \nVector A - {d:.2}\nVector B - {d:.2}\n", .{ result.vecA, result.vecB });
 }
