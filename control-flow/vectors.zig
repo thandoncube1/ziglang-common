@@ -21,6 +21,13 @@ const Vec3 = struct {
         return m.sqrt(xp + yp + zp);
     }
 
+    // This mutates the struct fields.
+    pub fn twice(self: *Vec3) void {
+        self.x = self.x * 2.0;
+        self.y = self.y * 2.0;
+        self.z = self.z * 2.0;
+    }
+
     // I could also use a Struct inference @TypeOf(.{ .vec = @as(f64, 0), ... })
     // Anonymousstruct works too.
     pub fn magnitudes(self: Vec3, other: Vec3) struct { vecA: f64, vecB: f64 } {
@@ -62,6 +69,12 @@ pub fn main() !void {
     const distance = v1.distance(v2);
 
     const dotProductResult = Vec3.dotProduct(v1, v2);
+
+    // Mutate the struct data
+    var v3 = Vec3{ .x = 5.8, .y = 2.1, .z = 3.5 };
+
+    v3.twice();
+    try stdout.print("Doubled: {d}\n", .{v3.y});
 
     // Get the magnitude of the 2 vectors
     const magnitude1 = v1.magnitude();
