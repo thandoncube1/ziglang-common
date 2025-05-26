@@ -38,3 +38,14 @@ storing any value that is known at `compile-time`.
 This memory space only exists to store literals, constants, boolean and primitive values at compile time.
 Its not really important for you as a programmer since you can't control it or access it and does not affect your
 program logic. It simply exists in your program.
+
+## Stack
+
+If a local object in your function is stored in the stack,
+you should never return a pointer to this local object from from the function. Because this pointer will
+always become undefined after the function returns, since the stack space of the function is destroyed/Freed at the end of
+its scope. "What if you really need to use this local object in some way after the function returns?"
+
+The same way you would do if this were a C or C++ program. By returning an address to an object stored in the heap.
+The heap memory has a much more flexible lifecycle, and allows you to get a valid pointer to a local object
+of a function that already returned from its scope.
