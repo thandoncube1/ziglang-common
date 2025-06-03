@@ -17,4 +17,17 @@ pub fn main() !void {
     std.debug.print("{d}\n", .{some_number.*});
     // To the get the memory address, you just call the variable
     std.debug.print("{d}\n", .{some_number});
+
+    // Fixed size buffer - Allocation
+    var buffer: [10]u8 = undefined;
+    for (0..buffer.len) |i| {
+        buffer[i] = 0; // Initialize to 0
+    }
+
+    var fba = std.heap.FixedBufferAllocator.init(&buffer);
+    const fAllocator = fba.allocator();
+    const input = try fAllocator.alloc(u8, 5);
+    defer fAllocator.free(input);
+
+    std.debug.print("{d}\n", .{input});
 }
