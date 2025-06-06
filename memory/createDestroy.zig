@@ -1,4 +1,5 @@
 const std = @import("std");
+const expect = std.testing.expect;
 
 const User = struct {
     id: usize,
@@ -8,6 +9,20 @@ const User = struct {
         return .{ .id = id, .name = name };
     }
 };
+
+test "General purpose allocator" {
+    var gpa = std.heap.GeneralPurposeAllocator(.{}){};
+    const allocator = gpa.allocator();
+
+    defer {
+        const deinit_status = gpa.deinit();
+        // fail test: can't try in defer is executed after we return
+        if (deinit_status == .leak) expect(false) catch @panic("TEST FAIL");
+    }
+
+    const bytes = try allocator.alloc(u8, 100);
+    defer allocator.free(bytes);
+}
 
 pub fn main() !void {
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
