@@ -24,6 +24,16 @@ test "General purpose allocator" {
     defer allocator.free(bytes);
 }
 
+test "allocation" {
+    var allocator = std.heap.page_allocator;
+
+    const memory = try allocator.alloc(u8, 100);
+    defer allocator.free(memory);
+
+    try expect(memory.len == 100);
+    try expect(@TypeOf(memory) == []u8);
+}
+
 pub fn main() !void {
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
     const allocator = gpa.allocator();
