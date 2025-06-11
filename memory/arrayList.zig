@@ -16,3 +16,21 @@ test "arraylist" {
 
     try expect(eql(u8, list.items, "Hello World!"));
 }
+
+pub fn main() !void {
+    const allocator = std.heap.page_allocator;
+    var names = ArrayList([]const u8).init(allocator);
+    defer names.deinit();
+
+    try names.append("Thando");
+    try names.append("Wilson");
+    try names.append("James");
+    try names.append("Cooley");
+    try names.append("Timothy");
+    try names.append("Blake");
+    try names.append("Damon");
+    try names.append("Brett");
+    try names.append("Kyliann");
+
+    try std.io.getStdOut().writer().print("{d}\n", .{names.capacity});
+}
