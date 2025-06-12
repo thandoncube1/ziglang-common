@@ -14,3 +14,22 @@ test "createFile, write, seekTo, read" {
 
     try expect(eql(u8, buffer[0..bytes_read], "Hello File!"));
 }
+
+pub fn main() !void {
+    try std.io.getStdOut().writer().print("Welcome to the Print! [quit] `to exit program`\n", .{});
+
+    const stdin = std.io.getStdIn().reader();
+
+    while (true) {
+        try std.io.getStdOut().writer().print("\n> ", .{});
+        var buffer: [1024]u8 = undefined;
+
+        const result = try stdin.readUntilDelimiter(&buffer, '\n');
+
+        if (eql(u8, result, "quit")) {
+            return;
+        }
+
+        try std.io.getStdOut().writer().print("{s}", .{result});
+    }
+}
