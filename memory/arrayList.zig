@@ -32,5 +32,14 @@ pub fn main() !void {
     try names.append("Brett");
     try names.append("Kyliann");
 
-    try std.io.getStdOut().writer().print("{d}\n", .{names.capacity});
+    try std.io.getStdOut().writer().print("{d}\n", .{names.items.len});
+
+    var len: usize = names.items.len;
+
+    while (len > 0) {
+        len -= 1;
+        std.debug.print("{s} \n", .{names.items[len]});
+    }
+
+    try std.io.getStdOut().writer().print("{s}\n", .{"\n...done"});
 }
