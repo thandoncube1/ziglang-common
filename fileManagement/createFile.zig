@@ -6,7 +6,7 @@ test "createFile, write, seekTo, read" {
     const file = try std.fs.cwd().createFile("junk_file.txt", .{ .read = true });
     defer file.close();
 
-    try file.writeAll("Helo File!");
+    try file.writeAll("Hello File!");
 
     var buffer: [100]u8 = undefined;
     try file.seekTo(0);
