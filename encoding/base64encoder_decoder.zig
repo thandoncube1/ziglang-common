@@ -48,3 +48,27 @@ fn _calc_encode_length(input: []const u8) !usize {
     const n_groups: usize = try std.math.divCeil(usize, input.len, 3);
     return n_groups * 4;
 }
+
+//  for each 4 bytes in the input, 3 bytes will be produced in the output of the decoder.
+
+// [Logic]: we take the length of the input and divide it by 4, then we apply a floor function on the result, then we multiply the result by 3, and then, we subtract from the result how much times the character = is found in the input.
+
+fn _calc_decode_length(input: []const u8) !usize {
+    if (input.len < 4) {
+        return 3;
+    }
+
+    const n_groups: usize = try std.math.divFloor(usize, input.len, 4);
+    var multiple_groups: usize = n_groups * 3;
+    var i: usize = input.len - 1;
+
+    while (i > 0) : (i -= 1) {
+        if (input[i] == '=') {
+            multiple_groups -= 1;
+        } else {
+            break;
+        }
+    }
+
+    return multiple_groups;
+}
