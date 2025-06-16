@@ -35,9 +35,12 @@ pub fn main() !void {
 
     // Bit-shifting in Zig works similarly to bit-shifting in C. All bitwise operators that exist in C are available in Zig. Here, in the base64 encoder algorithm, they are essential to produce the result we want.
     const input = "Hi";
-    try std.io.getStdOut().writer().print("{d}\n", .{input[0] >> 2});
+    try std.io.getStdOut().writer().print("Shift Right - {d}\n", .{input[0] >> 2});
     const char_index: i32 = input[0] >> 2;
     try std.io.getStdOut().writer().print("Converting after shifting: {c}\n", .{base64._char_at(char_index)});
+
+    try std.io.getStdOut().writer().print("Shift left - {d}\n", .{input[0] << 2});
+    try std.io.getStdOut().writer().print("Converting after shifting: {c}\n", .{base64._char_at(input[0] << 2)});
 }
 
 // If you don’t have any previous experience with base64, you might not understand the differences between “encode” and “decode”. Essentially, the terms “encode” and “decode” here have the exact same meaning as they have in the field of encryption (i.e., they mean the same thing as “encode” and “decode” in hashing algorithms, like the MD5 algorithm).
