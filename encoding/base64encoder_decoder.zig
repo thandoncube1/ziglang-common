@@ -41,6 +41,10 @@ pub fn main() !void {
 
     try std.io.getStdOut().writer().print("Shift left - {d}\n", .{input[0] << 2});
     try std.io.getStdOut().writer().print("Converting after shifting: {c}\n", .{base64._char_at(input[0] << 2)});
+
+    // Working with bits
+    const bits = 0b10010111;
+    try std.io.getStdOut().writer().print("{d}\n", .{bits & 0b00110000});
 }
 
 // If you don’t have any previous experience with base64, you might not understand the differences between “encode” and “decode”. Essentially, the terms “encode” and “decode” here have the exact same meaning as they have in the field of encryption (i.e., they mean the same thing as “encode” and “decode” in hashing algorithms, like the MD5 algorithm).
