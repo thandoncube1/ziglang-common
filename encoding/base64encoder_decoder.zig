@@ -16,6 +16,19 @@ const Base64 = struct {
     pub fn _char_at(self: Base64, index: usize) u8 {
         return self._table[index];
     }
+
+    fn _char_index(self: Base64, char: u8) u8 {
+        if (char == '=')
+            return 64;
+        var index: u8 = 0;
+        for (0..63) |i| {
+            if (self._char_at(i) == char)
+                break;
+            index += 1;
+        }
+
+        return index;
+    }
 };
 
 test "is Character at index isAlphebetic" {
