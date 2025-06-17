@@ -54,7 +54,7 @@ pub fn main() !void {
 // For the encoder, the logic is the following: for each 3 bytes that we find in the input, 4 new bytes are created in the output. So, we take the number of bytes in the input, divide it by 3, use a ceiling function, then, we multiply the result by 4. That way, we get the total number of bytes that will be produced by the encoder in its output.
 
 // Calculate the encoding length
-fn _calc_encode_length(input: []const u8) !usize {
+pub fn _calc_encode_length(input: []const u8) !usize {
     if (input.len < 3) {
         return 4;
     }
@@ -66,7 +66,7 @@ fn _calc_encode_length(input: []const u8) !usize {
 
 // [Logic]: we take the length of the input and divide it by 4, then we apply a floor function on the result, then we multiply the result by 3, and then, we subtract from the result how much times the character = is found in the input.
 
-fn _calc_decode_length(input: []const u8) !usize {
+pub fn _calc_decode_length(input: []const u8) !usize {
     if (input.len < 4) {
         return 3;
     }
