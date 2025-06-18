@@ -13,7 +13,7 @@ pub const Base64 = struct {
         };
     }
 
-    pub fn _char_at(self: Base64, index: usize) u8 {
+    fn _char_at(self: Base64, index: usize) u8 {
         return self._table[index];
     }
 
@@ -37,7 +37,8 @@ pub const Base64 = struct {
     // For the encoder, the logic is the following: for each 3 bytes that we find in the input, 4 new bytes are created in the output. So, we take the number of bytes in the input, divide it by 3, use a ceiling function, then, we multiply the result by 4. That way, we get the total number of bytes that will be produced by the encoder in its output.
 
     // Calculate the encoding length
-    pub fn _calc_encode_length(input: []const u8) !usize {
+    pub fn _calc_encode_length(self: Base64, input: []const u8) !usize {
+        _ = self;
         if (input.len < 3) {
             return 4;
         }
@@ -49,11 +50,11 @@ pub const Base64 = struct {
 
     // [Logic]: we take the length of the input and divide it by 4, then we apply a floor function on the result, then we multiply the result by 3, and then, we subtract from the result how much times the character = is found in the input.
 
-    pub fn _calc_decode_length(input: []const u8) !usize {
+    pub fn _calc_decode_length(self: Base64, input: []const u8) !usize {
+        _ = self; // Explicitly mark as used
         if (input.len < 4) {
             return 3;
         }
-
         const n_groups: usize = try std.math.divFloor(usize, input.len, 4);
         var multiple_groups: usize = n_groups * 3;
         var i: usize = input.len - 1;
@@ -109,11 +110,11 @@ pub const Base64 = struct {
         return out;
     }
 
-    fn decode(self: Base64, allocator: std.mem.Allocator, input: []const u8) ![]u8 {
+    pub fn decode(self: Base64, allocator: std.mem.Allocator, input: []const u8) ![]u8 {
         if (input.len == 0) {
             return "";
         }
-        const n_output = try _calc_decode_length(input);
+        const n_output = try self._calc_decode_length(input);
         var output = try allocator.alloc(u8, n_output);
         var count: u8 = 0;
         var iout: u64 = 0;
