@@ -39,6 +39,10 @@ pub fn main() !void {
     try std.io.getStdOut().writer().print("{d}\n", .{ptr[0]});
     ptr += 1;
     try std.io.getStdOut().writer().print("{d}\n", .{ptr[0]});
+
+    // Access the elements using slices
+    const sl = ar[0..ar.len];
+    std.debug.print("Slice: {d}\n", .{sl[2]});
 }
 
 const User = struct {
