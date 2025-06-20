@@ -1,7 +1,7 @@
 const std = @import("std");
 
 pub fn main() !void {
-    const number: u8 = 5;
+    var number: u8 = 5;
     const pointer = &number;
 
     // Pointer is an object that contains a memory address.
@@ -16,6 +16,29 @@ pub fn main() !void {
     const u = User.init(1, "Pedro", "email@gmail.com");
     const user_pointer = &u;
     try user_pointer.*.print_name();
+
+    // Changing the value of the object.
+    pointer.* = 8;
+    try std.io.getStdOut().writer().print("{d}\n", .{number});
+
+    // Changing constant values of pointer object references.
+    const c1: u8 = 8;
+    const c2: u8 = 12;
+    var pointer_number = &c1;
+    try std.io.getStdOut().writer().print("Before: {d}\n", .{pointer_number.*});
+    pointer_number = &c2;
+    try std.io.getStdOut().writer().print("After: {d}\n", .{pointer_number.*});
+
+    // Pointer arithmetics
+    const ar = [_]i32{ 1, 2, 3, 4 };
+    var ptr: [*]const i32 = &ar;
+    try std.io.getStdOut().writer().print("{d}\n", .{ptr[0]});
+    ptr += 1;
+    try std.io.getStdOut().writer().print("{d}\n", .{ptr[0]});
+    ptr += 1;
+    try std.io.getStdOut().writer().print("{d}\n", .{ptr[0]});
+    ptr += 1;
+    try std.io.getStdOut().writer().print("{d}\n", .{ptr[0]});
 }
 
 const User = struct {
