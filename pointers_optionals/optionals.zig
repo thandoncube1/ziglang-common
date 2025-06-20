@@ -10,4 +10,9 @@ pub fn main() !void {
     if (pointer.*) |not_null| {
         try stdout.print("{d}\n", .{not_null});
     }
+
+    // Unwrapping with the orelse
+    const x: ?i32 = null;
+    const dbl = (x orelse 15) * 2;
+    try stdout.print("{d}\n", .{dbl});
 }
