@@ -24,3 +24,16 @@ pub const Method = enum {
         return false;
     }
 };
+
+const Request = struct {
+    method: Method,
+    version: []const u8,
+    uri: []const u8,
+    pub fn init(method: Method, uri: []const u8, version: []const u8) Request {
+        return Request{
+            .method = method,
+            .uri = uri,
+            .version = version,
+        };
+    }
+};
