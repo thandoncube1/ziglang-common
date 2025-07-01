@@ -12,6 +12,7 @@ pub fn main() !void {
     for (0..buffer.len) |i| {
         buffer[i] = 0; // Initialize all values to 0 in memory.
     }
-    _ = try Request.read_request(connection, buffer[0..buffer.len]);
-    try stdout.print("{s}\n", .{buffer});
+    try Request.read_request(connection, buffer[0..buffer.len]);
+    const request = Request.parse_request(buffer[0..buffer.len]);
+    try stdout.print("{}\n", .{request});
 }
