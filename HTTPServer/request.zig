@@ -15,21 +15,22 @@ pub const Method = enum {
     PUT,
     DELETE,
     pub fn init(text: []const u8) !Method {
-        return MethodMap.get(text).?;
+        return MethodMap.get(text) orelse error.UnsupportedMethod;
     }
     pub fn is_supported(m: []const u8) bool {
-        const method = MethodMap.get(m);
-        if (method) |_| {
-            return true;
-        }
-        return false;
+        return MethodMap.has(m);
     }
 };
+
+const Headers = std.HashMap([]const u8, []const u8, std.hash_map.StringContext, std.hash_map.default_max_load_percentage);
 
 const Request = struct {
     method: Method,
     version: []const u8,
     uri: []const u8,
+    headers: Headers,
+    body: ?[]const u8,
+
     pub fn init(method: Method, uri: []const u8, version: []const u8) Request {
         return Request{
             .method = method,
