@@ -7,12 +7,13 @@ pub fn read_request(conn: Connection, buffer: []u8) !void {
     _ = try reader.read(buffer);
 }
 
-const MethodMap = Map(Method).initComptime(.{
-    .{ "GET", Method.GET },
-});
+const MethodMap = Map(Method).initComptime(.{ .{ "GET", Method.GET }, .{ "POST", Method.POST }, .{ "PUT", Method.PUT }, .{ "DELETE", Method.DELETE } });
 
 pub const Method = enum {
     GET,
+    POST,
+    PUT,
+    DELETE,
     pub fn init(text: []const u8) !Method {
         return MethodMap.get(text).?;
     }
