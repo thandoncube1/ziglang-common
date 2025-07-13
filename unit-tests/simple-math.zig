@@ -15,4 +15,7 @@ fn some_memory_leak(allocator: Allocator) !void {
     // allocated memory
 }
 
-test "memory leak" {}
+test "memory leak" {
+    const allocator = std.testing.allocator;
+    try some_memory_leak(allocator);
+}
