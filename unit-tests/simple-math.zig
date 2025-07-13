@@ -15,6 +15,12 @@ fn some_memory_leak(allocator: Allocator) !void {
     // allocated memory
 }
 
+fn alloc_error(alocator: Allocator) !void {
+    var iBuffer = try allocator.alloc(u8, 100);
+    defer allocator.free(iBuffer);
+    iBuffer[0] = 2;
+}
+
 test "memory leak" {
     const allocator = std.testing.allocator;
     try some_memory_leak(allocator);
