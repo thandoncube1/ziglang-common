@@ -14,6 +14,6 @@ pub fn main() !void {
             return err;
         },
     };
-
+    // This defer is for closing the file after processing it.
     defer file.close();
 }
