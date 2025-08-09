@@ -13,7 +13,7 @@ pub fn main() !void {
     while (true) {
         const connection = try server.accept();
         // Spawn a thread for each connection
-        try std.Thread.spawn(.{}, handle_connection, .{connection});
+        _ = try std.Thread.spawn(.{}, handle_connection, .{connection});
     }
 }
 
@@ -23,7 +23,7 @@ fn handle_connection(connection: std.net.Server.Connection) !void {
         buffer[i] = 0;
     }
     try Request.read_request(connection, buffer[0..buffer.len]);
-    const request = Request.parse_request(buffer[0..buffer.len]);
+    const request = try Request.parse_request(buffer[0..buffer.len]);
 
     if (request.method == Method.GET) {
         if (std.mem.eql(u8, request.uri, "/")) {

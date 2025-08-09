@@ -36,11 +36,13 @@ const Request = struct {
             .method = method,
             .uri = uri,
             .version = version,
+            .headers = Headers.init(std.heap.page_allocator),
+            .body = null,
         };
     }
 };
 
-pub fn parse_request(text: []u8) Request {
+pub fn parse_request(text: []u8) !Request {
     const line_index = std.mem.indexOfScalar(u8, text, '\n') orelse text.len;
     var iterator = std.mem.splitScalar(u8, text[0..line_index], ' ');
 
