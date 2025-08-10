@@ -3,7 +3,21 @@ const Connection = std.net.Server.Connection;
 
 pub fn send_file(conn: Connection, file_path: []const u8, status: []const u8) !void {
     const allocator = std.heap.page_allocator;
-    const file = try std.fs.cwd().openFile(file_path, .{});
+    const file = std.fs.cwd().openFile(file_path, .{}) catch |err| {
+        if (err == error.FileNotFound) {
+            // If file not found, send home page or 404
+            if (!std.mem.eql(u8, file_path, "public/index.html")) {
+                // Try to send home page
+                try send_file(conn, "public/index.html", "200 OK");
+            } else {
+                // If even home page is missing, send a minimal fallback
+                const fallback = "HTTP/1.1 404 Not Found\r\nContent-Length: 0\r\n\r\n";
+                _ = try conn.stream.write(fallback);
+            }
+            return;
+        }
+        return err;
+    };
     defer file.close();
 
     const file_size = try file.getEndPos();
@@ -19,9 +33,9 @@ pub fn send_file(conn: Connection, file_path: []const u8, status: []const u8) !v
 }
 
 pub fn send_200(conn: Connection) !void {
-    try send_file(conn, "index.html", "200 OK");
+    try send_file(conn, "public/index.html", "200 OK");
 }
 
 pub fn send_404(conn: Connection) !void {
-    try send_file(conn, "404.html", "404 Not Found");
+    try send_file(conn, "public/404.html", "404 Not Found");
 }

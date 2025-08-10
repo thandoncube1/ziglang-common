@@ -23,7 +23,14 @@ fn handle_connection(connection: std.net.Server.Connection) !void {
         buffer[i] = 0;
     }
     try Request.read_request(connection, buffer[0..buffer.len]);
-    const request = try Request.parse_request(buffer[0..buffer.len]);
+    const request = Request.parse_request(buffer[0..buffer.len]) catch |err| {
+        if (err == error.UnsupportedMethod) {
+            const msg = "HTTP/1.1 405 Method Not Allowed\r\nContent-Length: 0\r\n\r\n";
+            _ = try connection.stream.write(msg);
+            return;
+        }
+        return err;
+    };
 
     if (request.method == Method.GET) {
         if (std.mem.eql(u8, request.uri, "/")) {
