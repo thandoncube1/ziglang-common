@@ -18,6 +18,7 @@ pub fn main() !void {
 }
 
 // Common connection on the socket
+// There are quite a few more steps to getting this server to work fully
 fn handle_connection(connection: std.net.Server.Connection) !void {
     var buffer: [1000]u8 = undefined;
     for (0..buffer.len) |i| {
